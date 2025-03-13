@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import '../styling/product-details.css';  
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import "../styling/product-details.css";
 
 const ProductDetailPage = () => {
-  const { id } = useParams();  
+  const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
-    name: '',
-    price: '',
-    quantity: '',
-    description: '',
+    name: "",
+    price: "",
+    quantity: "",
+    description: "",
   });
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const ProductDetailPage = () => {
           description: data.description,
         });
       })
-      .catch((error) => setError('Failed to fetch product.'));
+      .catch((error) => setError("Failed to fetch product."));
   }, [id]);
 
   const handleChange = (e) => {
@@ -41,36 +41,38 @@ const ProductDetailPage = () => {
     e.preventDefault();
 
     fetch(`https://inventory-backend-node.onrender.com/products/${id}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
     })
       .then((response) => response.json())
       .then((data) => {
-        alert('Product updated successfully');
-        setProduct(data); 
-        navigate(`/products`);  
+        alert("Product updated successfully");
+        setProduct(data);
+        navigate(`/products`);
       })
       .catch((error) => {
-        alert('Failed to update product');
+        alert("Failed to update product");
         console.error(error);
       });
   };
 
   const handleDelete = () => {
-    const confirmDelete = window.confirm('Are you sure you want to delete this product?');
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this product?"
+    );
     if (confirmDelete) {
       fetch(`https://inventory-backend-node.onrender.com/products/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
       })
         .then(() => {
-          alert('Product deleted successfully');
-          navigate('/products');  
+          alert("Product deleted successfully");
+          navigate("/products");
         })
         .catch((error) => {
-          alert('Failed to delete product');
+          alert("Failed to delete product");
           console.error(error);
         });
     }
@@ -121,17 +123,19 @@ const ProductDetailPage = () => {
             onChange={handleChange}
             placeholder="Description"
           />
-          <button type="submit">Update Product</button>
+          <div className="buttons">
+            <button type="submit" className="update-button">
+              Update Product
+            </button>
+            <button
+              type="button"
+              className="delete-button"
+              onClick={handleDelete}
+            >
+              Delete Product
+            </button>
+          </div>
         </form>
-      </div>
-
-      <div className="buttons">
-        <button className="delete-button" onClick={handleDelete}>
-          Delete Product
-        </button>
-        <button className="update-button" onClick={handleUpdate}>
-          Update Product
-        </button>
       </div>
     </div>
   );

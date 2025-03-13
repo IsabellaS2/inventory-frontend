@@ -1,17 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import '../styling/product-page.css';
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "../styling/product-page.css";
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('https://inventory-backend-node.onrender.com/products')
-      .then((response) => response.json())
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      navigate("/error");
+      return;
+    }
+
+    fetch("https://inventory-backend-node.onrender.com/products", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          if (response.status === 403) {
+            setError(
+              "You are not authorized to view this page. Please log in."
+            );
+            navigate("/error");
+          } else {
+            throw new Error("Failed to fetch products");
+          }
+        }
+        return response.json();
+      })
       .then((data) => setProducts(data))
-      .catch((error) => setError('Failed to fetch products.'));
-  }, []);
+      .catch((error) => setError(error.message));
+  }, [navigate]);
 
   if (error) {
     return <div>{error}</div>;
@@ -28,7 +53,9 @@ const ProductsPage = () => {
               <p className="product-description">{product.description}</p>
               <p className="product-price">Price: £{product.price}</p>
               <p className="product-quantity">Quantity: {product.quantity}</p>
-              <Link to={`/products/${product.id}`}>View Details</Link>
+              <Link className="product-button" to={`/products/${product.id}`}>
+                View Details
+              </Link>
             </div>
           </div>
         ))}
