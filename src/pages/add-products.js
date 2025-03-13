@@ -1,41 +1,62 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
-import '../styling/add-products.css';  
-
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import "../styling/add-products.css";
 
 const AddProductPage = () => {
-  const navigate = useNavigate(); 
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [quantity, setQuantity] = useState('');
-  const [description, setDescription] = useState('');
+  const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [description, setDescription] = useState("");
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/error");
+    }
+  }, [navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const newProduct = {
-      name,
-      price,
-      quantity,
-      description,
-    };
+    if (price < 0 || quantity < 0) {
+      setError("Price and quantity cannot be negative.");
+      return;
+    }
 
-    fetch('https://inventory-backend-node.onrender.com/add-product', {
-      method: 'POST',
+    const newProduct = { name, price, quantity, description };
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/error");
+      return;
+    }
+
+    fetch("https://inventory-backend-node.onrender.com/add-product", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(newProduct),
     })
-      .then((response) => response.json())
-      .then((data) => {
-        alert('Product added successfully!');
-        navigate('/products');
+      .then((response) => {
+        if (response.status === 403) {
+          navigate("/error");
+          throw new Error("Unauthorized: Invalid token");
+        }
+        if (!response.ok) {
+          throw new Error("Failed to add product");
+        }
+        return response.json();
+      })
+      .then(() => {
+        alert("Product added successfully!");
+        navigate("/products");
       })
       .catch((error) => {
-        setError('Failed to add product');
-        console.error('Error:', error);
+        setError(error.message || "Failed to add product");
+        console.error("Error:", error);
       });
   };
 
@@ -81,7 +102,9 @@ const AddProductPage = () => {
           required
         ></textarea>
 
-        <button type="submit">Add Product</button>
+        <button className="add-button" type="submit">
+          Add Product
+        </button>
       </form>
     </div>
   );

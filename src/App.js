@@ -4,6 +4,10 @@ import Navbar from "./components/navbar";
 import ProductsPage from "./pages/products-page";
 import ProductDetailPage from "./pages/product-details";
 import AddProductPage from "./pages/add-products";
+import Login from "./pages/login";
+import Register from "./pages/register";
+import ErrorPage from "./pages/error-page";
+import './App.css';
 
 const App = () => {
   return (
@@ -14,6 +18,10 @@ const App = () => {
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/products/:id" element={<ProductDetailPage />} />
         <Route path="/add-product" element={<AddProductPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="*" element={<ErrorPage />} /> {/* Catch-all for undefined routes */}
+
       </Routes>
     </Router>
   );

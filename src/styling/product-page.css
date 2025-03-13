@@ -1,7 +1,7 @@
-/* ProductsPage.css */
 .products-container {
   padding: 20px;
   text-align: center;
+  background-color: #fcf2fb;
 }
 
 .products-grid {
@@ -28,6 +28,16 @@
 
 .product-info {
   padding: 16px;
+}
+
+.product-button {
+  padding: 8px 16px;
+  background-color: #dce7f7;
+  color: #182e4f;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .product-name {
