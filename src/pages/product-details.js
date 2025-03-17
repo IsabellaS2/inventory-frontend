@@ -15,9 +15,32 @@ const ProductDetailPage = () => {
   });
 
   useEffect(() => {
-    fetch(`https://inventory-backend-node.onrender.com/products/${id}`)
-      .then((response) => response.json())
+    const token = localStorage.getItem("token");
+    console.log("📦 Token:", token);
+  
+    if (!token) {
+      console.log("🔴 No token, redirecting...");
+      navigate("/error");
+      return; // Ensure no further code runs
+    }
+  
+    fetch(`https://inventory-backend-node.onrender.com/products/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        console.log("📊 Response status:", response.status);
+        if (response.status === 403 || response.status === 401) {
+          console.log("🚫 Unauthorized - redirecting to /error");
+          navigate("/error");
+          return;
+        }
+        return response.json();
+      })
       .then((data) => {
+        console.log("✅ Product data:", data);
         setProduct(data);
         setFormData({
           name: data.name,
@@ -26,8 +49,12 @@ const ProductDetailPage = () => {
           description: data.description,
         });
       })
-      .catch((error) => setError("Failed to fetch product."));
-  }, [id]);
+      .catch((error) => {
+        console.error("❌ Fetch error:", error);
+        setError("Failed to fetch product.");
+      });
+  }, [id, navigate]);
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,23 +66,38 @@ const ProductDetailPage = () => {
 
   const handleUpdate = (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/error");
+      return;
+    }
 
     fetch(`https://inventory-backend-node.onrender.com/products/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(formData),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status === 403) {
+          navigate("/error");
+          throw new Error("Unauthorized: Invalid token");
+        }
+        if (!response.ok) {
+          throw new Error("Failed to update product.");
+        }
+        return response.json();
+      })
       .then((data) => {
         alert("Product updated successfully");
         setProduct(data);
-        navigate(`/products`);
+        navigate("/products");
       })
       .catch((error) => {
-        alert("Failed to update product");
-        console.error(error);
+        alert("Error updating product: " + error.message);
+        console.error("Update error:", error);
       });
   };
 
@@ -63,28 +105,39 @@ const ProductDetailPage = () => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this product?"
     );
-    if (confirmDelete) {
-      fetch(`https://inventory-backend-node.onrender.com/products/${id}`, {
-        method: "DELETE",
-      })
-        .then(() => {
-          alert("Product deleted successfully");
-          navigate("/products");
-        })
-        .catch((error) => {
-          alert("Failed to delete product");
-          console.error(error);
-        });
+    if (!confirmDelete) return;
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/error");
+      return;
     }
+
+    fetch(`https://inventory-backend-node.onrender.com/products/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (response.status === 403) {
+          navigate("/error");
+          throw new Error("Unauthorized: Invalid token");
+        }
+        if (!response.ok) {
+          throw new Error("Failed to delete product.");
+        }
+        alert("Product deleted successfully");
+        navigate("/products");
+      })
+      .catch((error) => {
+        alert("Error deleting product: " + error.message);
+        console.error("Delete error:", error);
+      });
   };
 
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  if (!product) {
-    return <div>Loading...</div>;
-  }
+  if (error) return <div className="error-message">{error}</div>;
+  if (!product) return <div>Loading...</div>;
 
   return (
     <div className="product-detail-container">
@@ -96,33 +149,45 @@ const ProductDetailPage = () => {
       <div className="form-container">
         <h2>Update Product</h2>
         <form onSubmit={handleUpdate}>
+          <label htmlFor="name">Product Name:</label>
           <input
             type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
             placeholder="Product Name"
+            required
           />
+
+          <label htmlFor="price">Price:</label>
           <input
             type="number"
             name="price"
             value={formData.price}
             onChange={handleChange}
             placeholder="Price"
+            required
           />
+
+          <label htmlFor="quantity">Quantity:</label>
           <input
             type="number"
             name="quantity"
             value={formData.quantity}
             onChange={handleChange}
             placeholder="Quantity"
+            required
           />
+
+          <label htmlFor="description">Description:</label>
           <textarea
             name="description"
             value={formData.description}
             onChange={handleChange}
             placeholder="Description"
+            required
           />
+
           <div className="buttons">
             <button type="submit" className="update-button">
               Update Product

@@ -14,7 +14,22 @@ const AddProductPage = () => {
     const token = localStorage.getItem("token");
     if (!token) {
       navigate("/error");
+      return;
     }
+
+    fetch("https://inventory-backend-node.onrender.com/profile", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (response.status === 403 || !response.ok) {
+          throw new Error("Unauthorized access");
+        }
+        return response.json();
+      })
+      .catch(() => navigate("/error"));
   }, [navigate]);
 
   const handleSubmit = (e) => {

@@ -15,8 +15,10 @@ const Navbar = () => {
         <li>
           <Link to="/add-product">Add Product</Link>
         </li>
-
-        {/* Add more links here */}
+        <li>
+          <Link to="/profile">Profile</Link>
+        </li>
+        
       </ul>
     </nav>
   );

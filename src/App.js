@@ -7,6 +7,7 @@ import AddProductPage from "./pages/add-products";
 import Login from "./pages/login";
 import Register from "./pages/register";
 import ErrorPage from "./pages/error-page";
+import Profile from "./pages/profile";
 import './App.css';
 
 const App = () => {
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/add-product" element={<AddProductPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="*" element={<ErrorPage />} /> {/* Catch-all for undefined routes */}
 
       </Routes>
