@@ -64,7 +64,7 @@ const LoginPage = () => {
           required
         />
 
-        <button class="submit-button" type="submit">
+        <button className="submit-button" type="submit">
           Login
         </button>
       </form>
