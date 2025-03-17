@@ -8,6 +8,7 @@ import Login from "./pages/login";
 import Register from "./pages/register";
 import ErrorPage from "./pages/error-page";
 import Profile from "./pages/profile";
+import HomePage from "./pages/home";
 import './App.css';
 
 const App = () => {
@@ -15,7 +16,7 @@ const App = () => {
     <Router>
       <Navbar /> 
       <Routes>
-        <Route path="/" element={<h1>Welcome to the Home Page</h1>} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/products/:id" element={<ProductDetailPage />} />
         <Route path="/add-product" element={<AddProductPage />} />
