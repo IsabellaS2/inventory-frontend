@@ -1,14 +1,16 @@
 # Skincare Inventory - Enterprise Full-stack Application Development
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-
 ## Introduction
 ### Solution Overview
 A high-level summary of your application.
 ### Project Aim & Objectives:
 State the main goal of your application.
 List 3–5 key objectives (e.g., “Implement secure authentication,” “Enable real-time data updates”).
+
+
+Users - Can view all products, can't edit, delete or add products
+Managers - Can view and update products but can't delete or add products
+Admins - Can view, edit, delete and add products. Can also see all user details and update user roles
 
 
 ## Enterprise Considerations

@@ -62,3 +62,33 @@
 .product-price {
   font-weight: bold;
 }
+
+/* Loading Screen */
+.loading-message {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #333;
+  margin-top: 50px;
+}
+
+/* No products message */
+.no-products {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #555;
+  margin-top: 50px;
+}
+
+.no-products .home-card {
+  cursor: pointer;
+  background-color: #f4f4f9;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s;
+}
+
+.no-products .home-card:hover {
+  background-color: #e0e0e0;
+}

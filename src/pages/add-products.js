@@ -9,9 +9,10 @@ const AddProductPage = () => {
   const [quantity, setQuantity] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState(null);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const token = localStorage.getItem("token");
+
     if (!token) {
       navigate("/error");
       return;
@@ -24,12 +25,23 @@ const AddProductPage = () => {
       },
     })
       .then((response) => {
-        if (response.status === 403 || !response.ok) {
+        if (!response.ok) {
           throw new Error("Unauthorized access");
         }
         return response.json();
       })
-      .catch(() => navigate("/error"));
+      .then((data) => {
+        if (data.user.role !== "admin") {
+          navigate("/access-control-error", {
+            state: { user: "admins", message: "add" },
+          });
+        } else {
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        navigate("/error");
+      });
   }, [navigate]);
 
   const handleSubmit = (e) => {
@@ -74,6 +86,10 @@ const AddProductPage = () => {
         console.error("Error:", error);
       });
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="add-product-container">
