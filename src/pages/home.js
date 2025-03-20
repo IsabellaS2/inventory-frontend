@@ -38,6 +38,8 @@ const HomePage = () => {
         <div className="home-card" onClick={() => navigate("/add-product")}>
           <h2>Add Products</h2>
           <p>Add a new product to your inventory</p>
+          <p>(Admins Only)</p>
+
         </div>
         <div className="home-card" onClick={() => navigate("/products")}>
           <h2>View Products</h2>

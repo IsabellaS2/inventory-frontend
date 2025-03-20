@@ -6,15 +6,16 @@ import ProductDetailPage from "./pages/product-details";
 import AddProductPage from "./pages/add-products";
 import Login from "./pages/login";
 import Register from "./pages/register";
-import ErrorPage from "./pages/error-page";
+import ErrorPage from "./pages/error-pages/login-error";
 import Profile from "./pages/profile";
 import HomePage from "./pages/home";
-import './App.css';
+import AddProductsError from "./pages/error-pages/access-control-error";
+import "./App.css";
 
 const App = () => {
   return (
     <Router>
-      <Navbar /> 
+      <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/products" element={<ProductsPage />} />
@@ -23,8 +24,9 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="*" element={<ErrorPage />} /> {/* Catch-all for undefined routes */}
-
+        <Route path="/access-control-error" element={<AddProductsError />} />
+        <Route path="*" element={<ErrorPage />} />{" "}
+        {/* Catch-all for undefined routes */}
       </Routes>
     </Router>
   );
