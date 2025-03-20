@@ -7,7 +7,7 @@ const ProductDetailPage = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
-  const [userRole, setUserRole] = useState(null);  
+  const [userRole, setUserRole] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     price: "",
@@ -17,12 +17,13 @@ const ProductDetailPage = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    console.log("📦 Token:", token);
 
     if (!token) {
+      console.log("🔴 No token, redirecting...");
       navigate("/error");
-      return;
+      return; 
     }
-
     fetch("https://inventory-backend-node.onrender.com/profile", {
       method: "GET",
       headers: {
@@ -51,13 +52,16 @@ const ProductDetailPage = () => {
       },
     })
       .then((response) => {
+        console.log("📊 Response status:", response.status);
         if (response.status === 403 || response.status === 401) {
+          console.log("🚫 Unauthorized - redirecting to /error");
           navigate("/error");
           return;
         }
         return response.json();
       })
       .then((data) => {
+        console.log("✅ Product data:", data);
         setProduct(data);
         setFormData({
           name: data.name,
@@ -122,13 +126,13 @@ const ProductDetailPage = () => {
       "Are you sure you want to delete this product?"
     );
     if (!confirmDelete) return;
-  
+
     const token = localStorage.getItem("token");
     if (!token) {
       navigate("/error");
       return;
     }
-  
+
     fetch(`https://inventory-backend-node.onrender.com/products/${id}`, {
       method: "DELETE",
       headers: {
@@ -151,7 +155,6 @@ const ProductDetailPage = () => {
         console.error("Delete error:", error);
       });
   };
-  
 
   if (error) return <div className="error-message">{error}</div>;
   if (!product) return <div>Loading...</div>;
