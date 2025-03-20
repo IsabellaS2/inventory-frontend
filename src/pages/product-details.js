@@ -7,7 +7,7 @@ const ProductDetailPage = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
-  const [userRole, setUserRole] = useState(null); // Store user role
+  const [userRole, setUserRole] = useState(null);  
   const [formData, setFormData] = useState({
     name: "",
     price: "",
@@ -23,7 +23,6 @@ const ProductDetailPage = () => {
       return;
     }
 
-    // Fetch user profile to get userRole
     fetch("https://inventory-backend-node.onrender.com/profile", {
       method: "GET",
       headers: {
@@ -45,7 +44,6 @@ const ProductDetailPage = () => {
         navigate("/error");
       });
 
-    // Fetch product details
     fetch(`https://inventory-backend-node.onrender.com/products/${id}`, {
       method: "GET",
       headers: {
@@ -82,7 +80,6 @@ const ProductDetailPage = () => {
     }));
   };
 
-  // Handle Update
   const handleUpdate = (e) => {
     e.preventDefault();
     const token = localStorage.getItem("token");

@@ -25,7 +25,7 @@ const AddProductPage = () => {
       },
     })
       .then((response) => {
-        if (!response.ok) {
+        if (response.status === 403 || !response.ok) {
           throw new Error("Unauthorized access");
         }
         return response.json();
