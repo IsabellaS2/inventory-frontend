@@ -1,9 +1,10 @@
 .profile-container {
   width: 90%;
+  height: 60%;
   max-width: 800px;
   margin: 50px auto;
-  padding: 20px;
-  background-color: #f4f4f9;
+  padding: 40px;
+  background-color: #edd3e9;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -42,6 +43,7 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin-bottom: 20px;
 }
 
 .logout-button:hover {
@@ -55,4 +57,24 @@
   font-size: 1.2rem;
 }
 
+.admin-panel-link {
+  text-align: center;
+  margin-top: 20px;
+}
 
+.admin-panel-link a {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #edabed;
+  padding: 15px 30px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.admin-panel-link a:hover {
+  background-color: #dbb3db;
+  color: #182e4f;
+  transform: scale(1.05);
+}
