@@ -10,6 +10,7 @@ import ErrorPage from "./pages/error-pages/login-error";
 import Profile from "./pages/profile";
 import HomePage from "./pages/home";
 import AddProductsError from "./pages/error-pages/access-control-error";
+import AdminPanel from "./pages/admin-panel";
 import "./App.css";
 
 const App = () => {
@@ -25,6 +26,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/access-control-error" element={<AddProductsError />} />
+        <Route path="/admin-panel" element={<AdminPanel />} />
         <Route path="*" element={<ErrorPage />} />{" "}
         {/* Catch-all for undefined routes */}
       </Routes>
