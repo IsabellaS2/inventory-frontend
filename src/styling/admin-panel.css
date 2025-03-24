@@ -1,0 +1,24 @@
+.admin-panel-container {
+  padding: 20px;
+  background-color: #fff;
+}
+
+.admin-panel-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-panel-container table th,
+.admin-panel-container table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.admin-panel-container table th {
+  background-color: #f4f4f9;
+}
+
+.admin-panel-container select {
+  padding: 5px;
+}

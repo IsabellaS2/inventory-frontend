@@ -22,6 +22,25 @@
   transition: transform 0.3s ease;
 }
 
+.product-card.low-quantity {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+}
+
+.product-card.low-quantity .product-info {
+  color: #721c24;
+}
+
+.low-quantity-message {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #721c24;
+  margin-top: 10px;
+  background-color: #f5c6cb;
+  padding: 8px;
+  border-radius: 4px;
+}
+
 .product-card:hover {
   transform: translateY(-10px);
 }
@@ -61,6 +80,35 @@
 
 .product-price {
   font-weight: bold;
+}
+
+/* Sorting dropdown */
+.sort-dropdown {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.sort-dropdown label {
+  font-size: 1.2rem;
+  margin-right: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.sort-dropdown select {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: 2px solid #edabed;
+  border-radius: 4px;
+  background-color: #fcf2fb;
+  color: #182e4f;
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Loading Screen */
