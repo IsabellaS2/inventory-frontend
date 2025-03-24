@@ -65,7 +65,6 @@ const ProductsPage = () => {
       });
   }, [navigate]);
 
-  // Function to sort the products based on the selected option
   const sortProducts = (option) => {
     let sortedProducts;
     switch (option) {

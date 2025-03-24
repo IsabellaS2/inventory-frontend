@@ -15,7 +15,6 @@ const AdminPanel = () => {
       return;
     }
 
-    // Fetch users if admin
     fetch("https://inventory-backend-node.onrender.com/users", {
       headers: { Authorization: `Bearer ${token}` },
     })
