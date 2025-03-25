@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styling/admin-panel.css";
+import "../../styling/profile/admin-panel.css";
+
 
 const AdminPanel = () => {
   const navigate = useNavigate();

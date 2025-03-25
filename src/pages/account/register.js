@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styling/login.css";
+import "../../styling/account/register.css";
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const navigate = useNavigate();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -11,41 +13,60 @@ const LoginPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const userCredentials = {
+    const newUser = {
+      firstName,
+      lastName,
       email,
       password,
     };
 
-    fetch("https://inventory-backend-node.onrender.com/login", {
+    fetch("https://inventory-backend-node.onrender.com/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(userCredentials),
+      body: JSON.stringify(newUser),
     })
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          alert("Login successful!");
-          localStorage.setItem("token", data.token);
-          navigate("/products");
+          alert("Registration successful! Please login.");
+          navigate("/login");
         } else {
-          setError(data.message || "Failed to login.");
+          setError(data.message || "Failed to register.");
         }
       })
       .catch((error) => {
-        setError("Failed to login");
+        setError("Failed to register");
         console.error("Error:", error);
       });
   };
 
   return (
-    <div className="login-container">
-      <h1>Login</h1>
+    <div className="register-container">
+      <h1>Register</h1>
 
       {error && <p className="error">{error}</p>}
 
       <form onSubmit={handleSubmit}>
+        <label htmlFor="firstName">First Name</label>
+        <input
+          type="text"
+          id="firstName"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          required
+        />
+
+        <label htmlFor="lastName">Last Name</label>
+        <input
+          type="text"
+          id="lastName"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          required
+        />
+
         <label htmlFor="email">Email</label>
         <input
           type="email"
@@ -65,17 +86,17 @@ const LoginPage = () => {
         />
 
         <button className="submit-button" type="submit">
-          Login
+          Register
         </button>
       </form>
 
       <div>
         <p>
-          Don't have an account? <a href="/register">Register here</a>
+          Already have an account? <a href="/login">Login here</a>
         </p>
       </div>
     </div>
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

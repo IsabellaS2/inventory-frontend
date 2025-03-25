@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styling/product-page.css";
-import "../styling/home.css";
+import "../../styling/products/product-page.css";
+import "../../styling/home.css";
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
