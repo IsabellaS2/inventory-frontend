@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import "../styling/product-details.css";
+import "../../styling/products/product-details.css";
 
 const ProductDetailPage = () => {
   const { id } = useParams();
