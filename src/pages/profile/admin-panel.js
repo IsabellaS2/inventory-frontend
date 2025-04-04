@@ -16,7 +16,7 @@ const AdminPanel = () => {
       return;
     }
 
-    fetch("https://inventory-backend-node.onrender.com/users", {
+    fetch("https://inventory-backend-16iy.onrender.com/users", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -29,7 +29,7 @@ const AdminPanel = () => {
 
   const handleRoleChange = (id, newRole) => {
     const token = localStorage.getItem("token");
-    fetch(`https://inventory-backend-node.onrender.com/users/${id}/role`, {
+    fetch(`https://inventory-backend-16iy.onrender.com/users/${id}/role`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

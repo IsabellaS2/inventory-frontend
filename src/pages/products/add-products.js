@@ -18,7 +18,7 @@ const AddProductPage = () => {
       return;
     }
 
-    fetch("https://inventory-backend-node.onrender.com/profile", {
+    fetch("https://inventory-backend-16iy.onrender.com/profile", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -59,7 +59,7 @@ const AddProductPage = () => {
       return;
     }
 
-    fetch("https://inventory-backend-node.onrender.com/add-product", {
+    fetch("https://inventory-backend-16iy.onrender.com/add-product", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -16,7 +16,7 @@ const LoginPage = () => {
       password,
     };
 
-    fetch("https://inventory-backend-node.onrender.com/login", {
+    fetch("https://inventory-backend-16iy.onrender.com/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

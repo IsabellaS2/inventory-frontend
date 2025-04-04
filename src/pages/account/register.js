@@ -20,7 +20,7 @@ const RegisterPage = () => {
       password,
     };
 
-    fetch("https://inventory-backend-node.onrender.com/register", {
+    fetch("https://inventory-backend-16iy.onrender.com/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

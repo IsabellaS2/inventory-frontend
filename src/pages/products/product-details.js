@@ -22,9 +22,9 @@ const ProductDetailPage = () => {
     if (!token) {
       console.log("🔴 No token, redirecting...");
       navigate("/error");
-      return; 
+      return;
     }
-    fetch("https://inventory-backend-node.onrender.com/profile", {
+    fetch("https://inventory-backend-16iy.onrender.com/profile", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -45,7 +45,7 @@ const ProductDetailPage = () => {
         navigate("/error");
       });
 
-    fetch(`https://inventory-backend-node.onrender.com/products/${id}`, {
+    fetch(`https://inventory-backend-16iy.onrender.com/products/${id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -92,7 +92,7 @@ const ProductDetailPage = () => {
       return;
     }
 
-    fetch(`https://inventory-backend-node.onrender.com/products/${id}`, {
+    fetch(`https://inventory-backend-16iy.onrender.com/products/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -133,7 +133,7 @@ const ProductDetailPage = () => {
       return;
     }
 
-    fetch(`https://inventory-backend-node.onrender.com/products/${id}`, {
+    fetch(`https://inventory-backend-16iy.onrender.com/products/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,

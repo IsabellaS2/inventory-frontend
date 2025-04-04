@@ -19,7 +19,7 @@ const ProductsPage = () => {
       return;
     }
 
-    fetch("https://inventory-backend-node.onrender.com/profile", {
+    fetch("https://inventory-backend-16iy.onrender.com/profile", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -43,7 +43,7 @@ const ProductsPage = () => {
       })
       .catch((error) => setError(error.message));
 
-    fetch("https://inventory-backend-node.onrender.com/products", {
+    fetch("https://inventory-backend-16iy.onrender.com/products", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
