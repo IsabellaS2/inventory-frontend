@@ -16,7 +16,7 @@ const ProfilePage = () => {
       return;
     }
 
-    fetch("https://inventory-backend-node.onrender.com/profile", {
+    fetch("https://inventory-backend-16iy.onrender.com/profile", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
