@@ -14,7 +14,6 @@
       - [Backend](#backend)
       - [Frontend](#frontend)
       - [Render’s Built-in Fault Tolerance](#renders-built-in-fault-tolerance)
-      - [Input Validation](#input-validation)
     - [Security](#security)
       - [JSON Web Token Authentication](#json-web-token-authentication)
       - [Password Hashing \& Salting](#password-hashing--salting)
@@ -30,7 +29,7 @@
       - [1. Implement Secure Authentication](#1-implement-secure-authentication)
       - [2. Enable Product Management](#2-enable-product-management)
       - [3. Role-Based Access Control](#3-role-based-access-control)
-      - [4. Sorting and Filtering](#4-sorting-and-filtering)
+      - [4. Sorting](#4-sorting)
       - [5. Implement Low Stock Management](#5-implement-low-stock-management)
   - [Known Issues \& Future Enhancements (Optional but recommended)](#known-issues--future-enhancements-optional-but-recommended)
   - [References](#references)
@@ -53,7 +52,7 @@ The Skincare Inventory Management System is a web-based application designed to 
 **Managers** - Can view and update products but can't delete or add products
 **Admins** - Can view, edit, delete and add products. Can also see all user details and update user roles
 
-**4. Sorting and Filtering**: Enable sorting of products by quantity and price to allow for easy inventory management. This will help users to quickly find items with low stock or the highest and lowest prices.
+**4. Sorting**: Enable sorting of products by quantity and price to allow for easy inventory management. This will help users to quickly find items with low stock or the highest and lowest prices.
 
 **5. Implement Low Stock Management**: Highlight products with low stock (below 20) by changing the product card’s color to red and display a "Quantity Low, Restock!" message, making it easier to identify products that need restocking.
 
@@ -61,13 +60,10 @@ The Skincare Inventory Management System is a web-based application designed to 
 
 ### Performance
 
-What strategies were used to ensure efficient performance?
-optimise response time, reduce latency
-
 To ensure the inventory management system ran efficiently, I hosted the PostgreSQL database, Node.js middleware, and React frontend all on Render. Keeping everything on the same platform and in the same region reduced latency between services, making API and database calls faster and more reliable.
 I also applied the separation of concerns principle by splitting the system into clearly defined parts. The frontend and backend are in separate repositories, which makes the codebase easier to manage and allows each service to be scaled or optimised independently. Hosting the database separately ensures it has dedicated resources, contributing to consistent performance even as the app grows.
 
-I also designed the system to stay responsive as it scales. The backend handles database queries efficiently, and the frontend avoids unnecessary re-renders when dealing with large datasets. This helps keep interactions like loading, sorting, and filtering products quick and smooth, even as more users and products are added. By structuring data access and rendering logic carefully, I ensured the app remains fast without compromising user experience.
+I also designed the system to stay responsive as it scales. The backend handles database queries efficiently, and the frontend avoids unnecessary re-renders when dealing with large datasets. This helps keep interactions like loading and sorting products quick and smooth, even as more users and products are added. By structuring data access and rendering logic carefully, I ensured the app remains fast without compromising user experience.
 
 ### Scalability
 
@@ -75,7 +71,7 @@ I built this application with scalability in mind by using a modular architectur
 
 #### Frontend (React)
 
-In the React application, components are grouped by functionality inside the pages/ and components/ folders.
+In the frontend, components are grouped by functionality inside the pages/ and components/ folders.
 
 For example:
 Authentication logic lives in `pages/account/login.js`
@@ -91,7 +87,7 @@ The backend is organised into:
 `middleware/` – manages reusable logic like authentication and role-based access (`access-control.js`)
 `database/` – holds Sequelize models for database interactions (`products.js`)
 
-This separation of concerns allows easy scaling each part of the backend independently. For example, new features can be added by simply creating new route files without modifying core logic. Middleware makes it easy to plug in additional logic (like logging or rate limiting) across endpoints without repetition.
+This separation of concerns allows easy scaling for each part of the backend independently. For example, new features can be added by simply creating new route files without modifying core logic. Middleware makes it easy to plug in additional logic across endpoints without repetition.
 
 #### Hosting on Render
 
@@ -109,10 +105,7 @@ Access control is tightly integrated across the app, ensuring that users without
 
 ### Robustness
 
-How does your application handle failures or errors?
-error handling, fault tolerance.
-
-My application has been built to gracefully handle errors and recover from failures without compromising the user experience. I implemented fault tolerance throughout both the backend and frontend, and leveraged Render’s built-in infrastructure features to enhance overall system resilience.
+My application has been built to handle errors and recover from failures without compromising the user experience. I implemented fault tolerance throughout both the backend and frontend, and leveraged Render’s built-in infrastructure features to enhance overall system resilience.
 
 #### Backend
 
@@ -130,7 +123,7 @@ try {
 
 I applied the same approach to my user routes, where I handle registration/login failures like duplicate users, password mismatches, or invalid data by returning clear, user-friendly messages.
 
-In addition, I use JWT authentication middleware (authenticateToken.js) and role-based access control (authenticateAdmin.js) to prevent unauthorised actions and provide secure access control.
+In addition, I use JWT authentication middleware (`authenticateToken.js`) and role-based access control (`authenticateAdmin.js`) to prevent unauthorised actions and provide secure access control.
 
 #### Frontend
 
@@ -143,7 +136,11 @@ On the frontend, I implemented robust error states using `useState`. For instanc
 });
 ```
 
-I also added logic to redirect unauthorised users to a dedicated error page, improving user flow without crashes. The app handles network errors, empty form submissions, and unauthorised access smoothly.
+I also added logic to redirect unauthorised users to dedicated error pages, improving user flow without crashes. The app handles network errors, empty form submissions, and unauthorised access smoothly. I also included strong input validation across both the signup and product creation workflows.
+
+For example, during registration, passwords must be at least six characters long, improving security and preventing weak credentials. Similarly, when adding products, form inputs are validated for example not entering numbers in the title field or letters in the quantity field to ensure data consistency.
+
+These checks reduce the risk of invalid or malformed data being saved to the database. On top of that, access control helps maintain system integrity: regular users are blocked from accessing sensitive routes like adding or updating products. This not only improves the user experience but also protects against unauthorised changes and potential misuse.
 
 #### Render’s Built-in Fault Tolerance
 
@@ -152,10 +149,6 @@ I deployed both the backend and database using Render, which adds an extra layer
 **Zero-Downtime Deploys**: When I push updates, Render performs blue-green deploys so users don’t experience any downtime.
 
 **Health Checks**: Render continuously monitors the service and can detect if it's unresponsive, restarting it as needed.
-
-#### Input Validation
-
-I also included strong input validation across both the signup and product creation workflows. For example, during registration, passwords must be at least six characters long, improving security and preventing weak credentials. Similarly, when adding products, form inputs are validated to ensure data consistency. You can't enter numbers in the title field or letters in the quantity field. These checks reduce the risk of invalid or malformed data being saved to the database. On top of that, access control helps maintain system integrity: regular users are blocked from accessing sensitive routes like adding or updating products. This not only improves the user experience but also protects against unauthorised changes and potential misuse.
 
 ### Security
 
@@ -182,7 +175,7 @@ This is used to securely store user passwords in the database by hashing each pa
 
 #### Access Control
 
-Access Control is implemented through RBAC. Different roles have different levels of permissions to interact with resources like products and user information.
+Access Control is implemented through RBAC. Different roles have different levels of permissions to interact with products and user information.
 
 Each user is assigned a role when they register or through an admin’s manual intervention. The roles determine the level of access the user has in the application.
 
@@ -261,6 +254,9 @@ Once inside the `inventory-backend` directory, run: `npm install`
 **2.3. Configure Environment Variables**
 Create a `.env` file in the root of the project directory. Add the necessary environment variables (DB_URL, DB_PASSWORD, and JWT_SECRET).
 
+JWT_SECRET is a secret string used to sign your JSON Web Tokens (JWT). You can generate a random secret key for added security using online tools or by running:
+`require('crypto').randomBytes(64).toString('hex');`
+
 Example .env file:
 
 ```env
@@ -325,15 +321,14 @@ In the frontend, API requests are made to the backend using the `fetch` API. The
 Example of fetching product details:
 
 ```javascript
-const API_URL = process.env.;
-
- fetch("https://inventory-backend-abcd.onrender.com/profile", {
-   method: "GET",
-   headers: {
-     Authorization: `Bearer ${token}`,
-   },
- })
-.then((response) => { /* handle response */ });
+fetch("https://inventory-backend-abcd.onrender.com/profile", {
+  method: "GET",
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+}).then((response) => {
+  /* handle response */
+});
 ```
 
 #### Running the Application
@@ -380,11 +375,11 @@ To see my application deployed, naivgate to [https://inventory-frontend-rj3w.onr
 
 **4. Security Highlights**
 
-- Password must be at least 6 characters (validated both client- and server-side).
+- Password must be at least 6 characters (validated server-side).
 - Email format is strictly validated.
 - JWT is stored in `localStorage` after login and used for authenticated requests.
-- Role-Based Access Control (RBAC) prevents unauthorized access to sensitive routes.
-- Users cannot access restricted routes by modifying the URL (e.g. `/add-products`), as access is validated both client- and server-side.
+- RBAC prevents unauthorised access to sensitive routes.
+- Users cannot access restricted routes by modifying the URL (e.g. `/add-products`), as access is validated both client and server-side.
 
 #### 2. Enable Product Management
 
@@ -393,16 +388,16 @@ This feature allows users to manage the product inventory by performing CRUD ope
 **1. Frontend Implementation**
 | **Component** | **Location** | **Purpose** |
 |---------------------|----------------------------------|----------------------------------------------------------------------------------------------|
-| ProductListPage | `pages/products/list.js` | Displays a list of all products with options to edit or delete each item. |
-| ProductCreatePage | `pages/products/create.js` | Provides a form to create new products. Validates input and sends data to `/products`. |
-| ProductEditPage | `pages/products/edit.js` | Lets users edit product details (name, price, stock). Sends updates to `/products/:id`. |
-| ProductDetailsPage | `pages/products/[id].js` | Shows detailed information of a product, including a delete option. |
+| ProductListPage | `pages/products/product-page.js` | Displays a list of all products with options to edit or delete each item. |
+| ProductCreatePage | `pages/products/add-products.js` | Provides a form to create new products. Validates input and sends data to `/products`. |
+| ProductEditPage | `pages/products/product-details.js` | Lets users edit product details (name, price, stock). Sends updates to `/products/:id`. |
+| ProductDetailsPage | `pages/products/product-details.js` | Shows detailed information of a product, including a delete option. |
 
 **2. Backend Implementation**
 | **Endpoint** | **Method** | **Path** | **Purpose** |
 |---------------------|------------|----------------------|----------------------------------------------------------------------------------------------|
 | Get All Products | GET | `/products` | Returns a list of all products. |
-| Create Product | POST | `/products` | Creates a new product. Validates data (e.g., name, price, stock). |
+| Create Product | POST | `/add-product` | Creates a new product. Validates data (e.g., name, price, stock). |
 | Get Product Details | GET | `/products/:id` | Returns details of a specific product by its ID. |
 | Update Product | PUT | `/products/:id` | Updates product details (name, price, stock) for a specific product. |
 | Delete Product | DELETE | `/products/:id` | Deletes a specific product by its ID. |
@@ -428,9 +423,9 @@ RBAC ensures that users only have access to the resources and actions necessary 
 | Get All Users (Admin) | GET | `/users` | Returns a list of all users. Accessible only by admins. |
 | Update User Role (Admin) | PUT | `/users/:id/role` | Allows admins to update a user's role (e.g., user, manager, admin). Requires admin authentication. |
 
-#### 4. Sorting and Filtering
+#### 4. Sorting
 
-**Purpose**: This feature enables users to sort products by quantity (lowest to highest, highest to lowest) and price (lowest to highest, highest to lowest). It helps in inventory management by allowing quick identification of products with low stock or varying prices.
+This feature enables users to sort products by quantity (lowest to highest, highest to lowest) and price (lowest to highest, highest to lowest). It helps in inventory management by allowing quick identification of products with low stock or varying prices.
 **Location in the Repository**: Inside the `ProductsPage` component in the frontend.
 
 **Relevant Features**:
@@ -441,7 +436,7 @@ RBAC ensures that users only have access to the resources and actions necessary 
 
 #### 5. Implement Low Stock Management
 
-- **Purpose**: This feature highlights products with low stock (below 20) by changing the product card's color to red and displaying a "Quantity Low, Restock!" message. This helps users easily identify products that need restocking, improving inventory management.
+This feature highlights products with low stock (below 20) by changing the product card's color to red and displaying a "Quantity Low, Restock!" message. This helps users easily identify products that need restocking, improving inventory management.
 
 - **Location in the Repository**: The implementation is in the frontend, within the `ProductsPage` component.
 
@@ -449,10 +444,6 @@ RBAC ensures that users only have access to the resources and actions necessary 
 
   - **Product Grid**: The product grid dynamically checks the quantity of each product and applies a special styling class (`low-quantity-message`) to products with less than 20 in stock.
   - **CSS Styling**: The styling for low-stock products is handled through custom CSS that changes the appearance of the product card and displays a bold, noticeable warning message.
-
-- **Relevant Components**:
-  - **`ProductsPage` Component**: Responsible for rendering the product grid and applying the low stock styling when needed.
-  - **CSS**: Custom styles are used to change the appearance of low-stock product cards and the display of the restock message.
 
 ## Known Issues & Future Enhancements (Optional but recommended)
 
@@ -467,4 +458,5 @@ For testing purposes, I made myself an admin, but if this were being handed over
 A possible future improvement would be adding user activity tracking throughout the application, for example, recording which user added or edited a product. This would be useful for accountability, auditing changes, and improving transparency in admin workflows.
 
 ## References
+
 I used Copilot integrated into my VSCode for basic code completion. When I encountered challenges, I turned to ChatGPT for assistance, helping me get unstuck and offering insights on how to approach certain problems.
